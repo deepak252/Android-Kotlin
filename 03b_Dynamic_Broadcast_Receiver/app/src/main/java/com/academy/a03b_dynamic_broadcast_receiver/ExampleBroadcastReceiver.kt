@@ -11,6 +11,9 @@ class ExampleBroadcastReceiver : BroadcastReceiver() {
         if(Intent.ACTION_AIRPLANE_MODE_CHANGED ==intent?.action){
             val isAirplaneMode = intent.getBooleanExtra("state",false);
             Toast.makeText(context,"Airplane mode ${if(isAirplaneMode) "enabled" else "disabled"}", Toast.LENGTH_SHORT).show();
+        }else if(Intent.ACTION_TIME_TICK==intent?.action){
+            //Trigger after every 1 min.
+            Toast.makeText(context,"Time Changed", Toast.LENGTH_SHORT).show();
         }
     }
 }

@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
 //        Toast.makeText(this,"onStart", Toast.LENGTH_SHORT).show();
         val filter = IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED)
+        filter.addAction(Intent.ACTION_TIME_TICK);
         registerReceiver(exampleBroadcastReceiver,filter);
     }
 

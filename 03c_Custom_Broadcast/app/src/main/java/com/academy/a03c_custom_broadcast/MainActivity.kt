@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         override fun onReceive(context: Context?, intent: Intent?) {
             super.onReceive(context, intent)
 
-            tvMessageReceived?.text = intent?.getStringExtra("com.academy.EXTRA_TEXT")
+            tvMessageReceived?.text = intent?.getStringExtra("com.academy.a03c_custom_broadcast.EXTRA_TEXT")
         }
     };
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
 
     private  fun sendBroadcastToSelf(){
         val intent = Intent(exampleBroadcastReceiver.EXAMPLE_ACTION);
-        intent.putExtra("com.academy.EXTRA_TEXT","Broadcast Received");
+        intent.putExtra("com.academy.a03c_custom_broadcast.EXTRA_TEXT","Broadcast Received from Self");
         sendBroadcast(intent);
     }
 

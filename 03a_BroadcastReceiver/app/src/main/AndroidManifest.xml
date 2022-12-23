@@ -23,7 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+<!--        IMPLICIT (Triggered with action name) and STATIC(declared in manifest) broadcast receivers-->
         <receiver android:name=".ExampleBroadcastReceiver" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

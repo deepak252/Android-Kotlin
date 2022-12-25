@@ -61,12 +61,16 @@ class MainActivity : AppCompatActivity() {
     private fun runCode(){
         logMessage("\nRunning Code")
         showProgressIndicator(true)
-        // Download all songs simultaneously, Create separate threads for each song
-        for(song in Playlist().songs){
-            val downloadThread = DownloadThread(song)
-            downloadThread.name = "Download Thread"
-            downloadThread.start()
-        }
+//        // Download all songs simultaneously, Create separate threads for each song
+//        for(song in Playlist().songs){
+//            val downloadThread = DownloadThread(song)
+//            downloadThread.name = "Download Thread"
+//            downloadThread.start()
+//        }
+
+        val downloadThread = DownloadThread()
+        downloadThread.name = "Download Thread"
+        downloadThread.start()
 
         showProgressIndicator(false)
 

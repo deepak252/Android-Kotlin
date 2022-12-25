@@ -2,14 +2,17 @@ package com.academy.a05c_thread_backgroundthread_class
 
 import android.util.Log
 
-class DownloadThread(private val song : String) : Thread() {
+class DownloadThread() : Thread() {
 
     override fun run() {
 //        super.run()
-        downloadSong()
+        //Using Single Thread for multiple songs download
+        for(song in Playlist().songs){
+            downloadSong(song)
+        }
     }
 
-    private fun downloadSong(){
+    private fun downloadSong( song : String){
         Log.d("DownloadThread", "Starting Download - $song")
         Thread.sleep(4000)
         Log.d("DownloadThread", "Download Complete - $song")

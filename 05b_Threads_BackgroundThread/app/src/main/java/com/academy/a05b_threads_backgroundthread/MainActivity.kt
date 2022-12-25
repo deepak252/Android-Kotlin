@@ -1,10 +1,9 @@
-package com.academy.a05a_threads_manage_ui
+package com.academy.a05b_threads_backgroundthread
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -26,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         progressIndicator = findViewById(R.id.progressIndicator)
         showProgressIndicator(false)
 
-        edtCode.setText(R.string.lorem_ipsum)
+//        edtCode.setText(R.string.lorem_ipsum)
 
         btnClear.setOnClickListener{
             clearCode()
@@ -41,15 +40,9 @@ class MainActivity : AppCompatActivity() {
     private fun runCode(){
         logMessage("\nRunning Code")
         showProgressIndicator(true)
-//        Thread.sleep(4000)  // Blocks UI thread (Main Thread)
-        val runnable =object : Runnable {  //runnable interface
-            override fun run() {
-                showProgressIndicator(false)
-            }
-        }
-        //Using Handler Class
-        val handler = Handler(Looper.getMainLooper())
-        handler.postDelayed(runnable,4000);
+        Thread.sleep(4000)  // Blocks UI thread (Main Thread)
+        showProgressIndicator(false)
+
     }
 
 

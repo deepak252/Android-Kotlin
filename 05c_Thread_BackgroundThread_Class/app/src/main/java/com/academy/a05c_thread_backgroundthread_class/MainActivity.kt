@@ -17,26 +17,26 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btnRun : Button
     private lateinit var btnClear : Button
     private lateinit var progressIndicator : ProgressBar
-    private lateinit var handler: Handler
-    private var MESSAGE_KEY = "message_key"
+//    private lateinit var handler: Handler
+//    private var MESSAGE_KEY = "message_key"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         initViews()
-        // Looper loops on Work Queue
-        // Handler manages the Looper
-        //** This "handler" is attached on Main Thread, so passing Main Thread Looper (getMainLooper)
-        handler =object : Handler(Looper.getMainLooper()){
-            override fun handleMessage(msg: Message) {
-//                super.handleMessage(msg)
-                Log.d("handleMessage", "${msg.data.getString(MESSAGE_KEY)}")
-                // Message Received from Background Thread -> Update UI
-                logMessage("\n${msg.data.getString(MESSAGE_KEY)}")
-                showProgressIndicator(false)
-            }
-        }
+//        // Looper loops on Work Queue
+//        // Handler manages the Looper
+//        //** This "handler" is attached on Main Thread, so passing Main Thread Looper (getMainLooper)
+//        handler =object : Handler(Looper.getMainLooper()){
+//            override fun handleMessage(msg: Message) {
+////                super.handleMessage(msg)
+//                Log.d("handleMessage", "${msg.data.getString(MESSAGE_KEY)}")
+//                // Message Received from Background Thread -> Update UI
+//                logMessage("\n${msg.data.getString(MESSAGE_KEY)}")
+//                showProgressIndicator(false)
+//            }
+//        }
 
     }
 
@@ -61,25 +61,14 @@ class MainActivity : AppCompatActivity() {
     private fun runCode(){
         logMessage("\nRunning Code")
         showProgressIndicator(true)
-
-        // Implementing Background Thread
-        val runnable =object:  Runnable{
-            override fun run() {
-//                logMessage("\nBG Thread : Running Code")
-                Log.d("Background Thread", "Download Started")
-                Thread.sleep(4000)
-                Log.d("Background Thread", "Download Completed")
-
-                val message = Message()
-                val bundle = Bundle()
-                bundle.putString(MESSAGE_KEY,"Download Completed")
-                message.data = bundle
-                handler.sendMessage(message)  // Send message from background thread (this) to UI thread
-
-            }
+        // Download all songs simultaneously, Create separate threads for each song
+        for(song in Playlist().songs){
+            val downloadThread = DownloadThread(song)
+            downloadThread.name = "Download Thread"
+            downloadThread.start()
         }
-        val thread = Thread(runnable)
-        thread.start()
+
+        showProgressIndicator(false)
 
     }
 

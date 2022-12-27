@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
 
         initViews()
 
-        mDownloadThread = DownloadThread()
+        mDownloadThread = DownloadThread(this)
         mDownloadThread.name = "Download Thread"
         mDownloadThread.start()
 
@@ -53,23 +53,32 @@ class MainActivity : AppCompatActivity() {
         logMessage("\nRunning Code")
         showProgressIndicator(true)
 
+
+//        val thread = Thread(object : Runnable{
+//            override fun run() {
+//                Log.d("","Download Started")
+//                Thread.sleep(4000)
+//                Log.d("","Download Complete")
+//
+//                runOnUiThread ( object : Runnable{
+//                    override fun run() {
+//                        showProgressIndicator(false)
+//                    }
+//                })
+//            }
+//        })
+//        thread.start()
+
         for( song in Playlist.SONGS){
             val message = Message.obtain() // Avoid creating new Message instance
             message.obj = song
             mDownloadThread.mHandler.sendMessage(message)
-
         }
-
-//        val downloadThread = DownloadThread()
-//        downloadThread.name = "Download Thread"
-//        downloadThread.start()
-
-        showProgressIndicator(false)
 
     }
 
 
-    private fun logMessage(message:String){
+    public fun logMessage(message:String){
         edtCode.append(message)
         scrollToEnd()
     }
@@ -82,7 +91,7 @@ class MainActivity : AppCompatActivity() {
         edtCode.setText("")
     }
 
-    private fun showProgressIndicator(loading:Boolean){
+    fun showProgressIndicator(loading:Boolean){
         progressIndicator.visibility= if(loading)  View.VISIBLE else View.INVISIBLE
     }
 }

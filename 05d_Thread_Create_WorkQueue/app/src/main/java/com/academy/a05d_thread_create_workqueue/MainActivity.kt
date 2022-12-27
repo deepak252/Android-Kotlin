@@ -17,26 +17,17 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btnRun : Button
     private lateinit var btnClear : Button
     private lateinit var progressIndicator : ProgressBar
-//    private lateinit var handler: Handler
-//    private var MESSAGE_KEY = "message_key"
+    private lateinit var mDownloadThread : DownloadThread
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         initViews()
-//        // Looper loops on Work Queue
-//        // Handler manages the Looper
-//        //** This "handler" is attached on Main Thread, so passing Main Thread Looper (getMainLooper)
-//        handler =object : Handler(Looper.getMainLooper()){
-//            override fun handleMessage(msg: Message) {
-////                super.handleMessage(msg)
-//                Log.d("handleMessage", "${msg.data.getString(MESSAGE_KEY)}")
-//                // Message Received from Background Thread -> Update UI
-//                logMessage("\n${msg.data.getString(MESSAGE_KEY)}")
-//                showProgressIndicator(false)
-//            }
-//        }
+
+        mDownloadThread = DownloadThread()
+        mDownloadThread.name = "Download Thread"
+        mDownloadThread.start()
 
     }
 
@@ -62,9 +53,16 @@ class MainActivity : AppCompatActivity() {
         logMessage("\nRunning Code")
         showProgressIndicator(true)
 
-        val downloadThread = DownloadThread()
-        downloadThread.name = "Download Thread"
-        downloadThread.start()
+        for( song in Playlist.SONGS){
+            val message = Message.obtain() // Avoid creating new Message instance
+            message.obj = song
+            mDownloadThread.mHandler.sendMessage(message)
+
+        }
+
+//        val downloadThread = DownloadThread()
+//        downloadThread.name = "Download Thread"
+//        downloadThread.start()
 
         showProgressIndicator(false)
 

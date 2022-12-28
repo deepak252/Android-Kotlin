@@ -51,8 +51,6 @@ class MainActivity : AppCompatActivity() {
         val myTask = MyTask(this)
         myTask.execute("Red", "Green", "Blue")
 //        myTask.execute("Red", "Green", "Blue")
-        val myTask2 = MyTask(this)
-        myTask2.execute("Red", "Green")
 
     }
 
@@ -81,11 +79,16 @@ class MainActivity : AppCompatActivity() {
                 Log.d("doInBackground", "arg = $arg")
                 Thread.sleep(2000)
             }
-            return ""
+            return "Download Complete"
         }
 
         override fun onProgressUpdate(vararg values: String?) {
             mainActivity.logMessage("\n${values[0]}")
+        }
+
+        override fun onPostExecute(result: String?) {
+            mainActivity.logMessage("\n $result")
+            mainActivity.showProgressIndicator(false)
         }
 
     }

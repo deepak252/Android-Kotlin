@@ -16,6 +16,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btnRun : Button
     private lateinit var btnClear : Button
     private lateinit var progressIndicator : ProgressBar
+    private var mTask : MyTask?=null
+    private var mTaskRunning = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,9 +50,14 @@ class MainActivity : AppCompatActivity() {
         logMessage("\nRunning Code")
         showProgressIndicator(true)
 
-        val myTask = MyTask(this)
-        myTask.execute("Red", "Green", "Blue")
-//        myTask.execute("Red", "Green", "Blue")
+        if(mTaskRunning && mTask!=null){
+            mTask!!.cancel(true)
+            mTaskRunning=false
+        }else{
+            mTask= MyTask(this)
+            mTask!!.execute("Red", "Green", "Blue")
+            mTaskRunning=true
+        }
 
     }
 
@@ -75,19 +82,33 @@ class MainActivity : AppCompatActivity() {
     class MyTask(val mainActivity: MainActivity) : AsyncTask<String, String, String>() {
         override fun doInBackground(vararg args: String?): String {
             for(arg in args){
+                if(isCancelled){
+                    publishProgress("Task Cancelled")
+                    break
+                }
                 publishProgress(arg)
                 Log.d("doInBackground", "arg = $arg")
                 Thread.sleep(2000)
             }
             return "Download Complete"
         }
-
+        //Not called on "Task Cancelled"
         override fun onProgressUpdate(vararg values: String?) {
             mainActivity.logMessage("\n${values[0]}")
         }
 
         override fun onPostExecute(result: String?) {
             mainActivity.logMessage("\n $result")
+            mainActivity.showProgressIndicator(false)
+        }
+
+        override fun onCancelled() {
+            mainActivity.logMessage("\n Task has been Cancelled")
+            mainActivity.showProgressIndicator(false)
+        }
+
+        override fun onCancelled(result: String?) {
+            mainActivity.logMessage("\n Cancelled With Returned Data : $result")
             mainActivity.showProgressIndicator(false)
         }
 

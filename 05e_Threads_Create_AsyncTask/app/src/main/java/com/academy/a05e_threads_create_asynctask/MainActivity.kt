@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
             mTask!!.cancel(true)
             mTaskRunning=false
         }else{
-            mTask= MyTask(this)
+            mTask= MyTask()
             mTask!!.execute("Red", "Green", "Blue")
             mTaskRunning=true
         }
@@ -79,7 +79,7 @@ class MainActivity : AppCompatActivity() {
         progressIndicator.visibility= if(loading)  View.VISIBLE else View.INVISIBLE
     }
 
-    class MyTask(val mainActivity: MainActivity) : AsyncTask<String, String, String>() {
+    inner class MyTask() : AsyncTask<String, String, String>() {
         override fun doInBackground(vararg args: String?): String {
             for(arg in args){
                 if(isCancelled){
@@ -94,22 +94,23 @@ class MainActivity : AppCompatActivity() {
         }
         //Not called on "Task Cancelled"
         override fun onProgressUpdate(vararg values: String?) {
-            mainActivity.logMessage("\n${values[0]}")
+            logMessage("\n${values[0]}")
+
         }
 
         override fun onPostExecute(result: String?) {
-            mainActivity.logMessage("\n $result")
-            mainActivity.showProgressIndicator(false)
+            logMessage("\n $result")
+            showProgressIndicator(false)
         }
 
         override fun onCancelled() {
-            mainActivity.logMessage("\n Task has been Cancelled")
-            mainActivity.showProgressIndicator(false)
+            logMessage("\n Task has been Cancelled")
+            showProgressIndicator(false)
         }
 
         override fun onCancelled(result: String?) {
-            mainActivity.logMessage("\n Cancelled With Returned Data : $result")
-            mainActivity.showProgressIndicator(false)
+            logMessage("\n Cancelled With Returned Data : $result")
+            showProgressIndicator(false)
         }
 
     }

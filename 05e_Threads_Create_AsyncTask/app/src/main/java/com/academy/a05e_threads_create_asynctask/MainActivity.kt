@@ -48,16 +48,16 @@ class MainActivity : AppCompatActivity() {
         logMessage("\nRunning Code")
         showProgressIndicator(true)
 
-        val myTask = MyTask()
+        val myTask = MyTask(this)
         myTask.execute("Red", "Green", "Blue")
 //        myTask.execute("Red", "Green", "Blue")
-        val myTask2 = MyTask()
+        val myTask2 = MyTask(this)
         myTask2.execute("Red", "Green")
 
     }
 
 
-    private fun logMessage(message:String){
+    fun logMessage(message:String){
         edtCode.append(message)
         scrollToEnd()
     }
@@ -74,15 +74,18 @@ class MainActivity : AppCompatActivity() {
         progressIndicator.visibility= if(loading)  View.VISIBLE else View.INVISIBLE
     }
 
-    class MyTask : AsyncTask<String, String, String>() {
+    class MyTask(val mainActivity: MainActivity) : AsyncTask<String, String, String>() {
         override fun doInBackground(vararg args: String?): String {
             for(arg in args){
+                publishProgress(arg)
                 Log.d("doInBackground", "arg = $arg")
                 Thread.sleep(2000)
-
             }
             return ""
+        }
 
+        override fun onProgressUpdate(vararg values: String?) {
+            mainActivity.logMessage("\n${values[0]}")
         }
 
     }

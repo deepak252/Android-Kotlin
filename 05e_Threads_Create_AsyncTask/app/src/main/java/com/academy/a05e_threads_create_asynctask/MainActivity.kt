@@ -1,6 +1,7 @@
 package com.academy.a05e_threads_create_asynctask
 
 
+import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Message
@@ -47,6 +48,12 @@ class MainActivity : AppCompatActivity() {
         logMessage("\nRunning Code")
         showProgressIndicator(true)
 
+        val myTask = MyTask()
+        myTask.execute("Red", "Green", "Blue")
+//        myTask.execute("Red", "Green", "Blue")
+        val myTask2 = MyTask()
+        myTask2.execute("Red", "Green")
+
     }
 
 
@@ -65,5 +72,18 @@ class MainActivity : AppCompatActivity() {
 
     private fun showProgressIndicator(loading:Boolean){
         progressIndicator.visibility= if(loading)  View.VISIBLE else View.INVISIBLE
+    }
+
+    class MyTask : AsyncTask<String, String, String>() {
+        override fun doInBackground(vararg args: String?): String {
+            for(arg in args){
+                Log.d("doInBackground", "arg = $arg")
+                Thread.sleep(2000)
+
+            }
+            return ""
+
+        }
+
     }
 }

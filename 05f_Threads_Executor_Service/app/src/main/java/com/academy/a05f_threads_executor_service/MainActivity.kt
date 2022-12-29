@@ -7,18 +7,23 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 class MainActivity : AppCompatActivity(){
     private lateinit var edtCode : EditText
     private lateinit var btnRun : Button
     private lateinit var btnClear : Button
     private lateinit var progressIndicator : ProgressBar
+    private var mExecuter : ExecutorService?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         initViews()
+
+        mExecuter = Executors.newFixedThreadPool(4)
 
     }
 
@@ -44,6 +49,17 @@ class MainActivity : AppCompatActivity(){
         logMessage("\nRunning Code")
         showProgressIndicator(true)
 
+        for (i in 1..10){
+            val work = Work(i)
+            mExecuter?.execute(work)
+        }
+
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mExecuter?.shutdown()
     }
 
 

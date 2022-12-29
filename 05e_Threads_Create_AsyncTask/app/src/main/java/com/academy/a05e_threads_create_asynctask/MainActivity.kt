@@ -11,19 +11,29 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), AsyncFragment.MyTaskHandler{
     private lateinit var edtCode : EditText
     private lateinit var btnRun : Button
     private lateinit var btnClear : Button
     private lateinit var progressIndicator : ProgressBar
     private var mTask : MyTask?=null
     private var mTaskRunning = false
+    private var FRAGMENT_TAG = "FragmentTag"
+    private var mFragment : AsyncFragment?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         initViews()
+        val fragmentManager = supportFragmentManager
+        mFragment = fragmentManager.findFragmentByTag(FRAGMENT_TAG) as AsyncFragment?
+        if(mFragment==null){
+            mFragment = AsyncFragment()
+            val transaction  = fragmentManager.beginTransaction()
+            transaction.add(mFragment!!,FRAGMENT_TAG)
+            transaction.commit()
+        }
 
 
     }
@@ -50,14 +60,7 @@ class MainActivity : AppCompatActivity() {
         logMessage("\nRunning Code")
         showProgressIndicator(true)
 
-        if(mTaskRunning && mTask!=null){
-            mTask!!.cancel(true)
-            mTaskRunning=false
-        }else{
-            mTask= MyTask()
-            mTask!!.execute("Red", "Green", "Blue")
-            mTaskRunning=true
-        }
+        mFragment?.runTask("Red", "Green", "Blue")
 
     }
 
@@ -113,5 +116,13 @@ class MainActivity : AppCompatActivity() {
             showProgressIndicator(false)
         }
 
+    }
+
+    override fun handleTask(message: String) {
+        logMessage("\n $message")
+        if(message=="Download Complete"){
+            showProgressIndicator(false)
+        }
+//        Log.d("handleTask : ", message)
     }
 }

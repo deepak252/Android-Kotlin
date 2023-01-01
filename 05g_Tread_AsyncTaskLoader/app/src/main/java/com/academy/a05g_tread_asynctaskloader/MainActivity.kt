@@ -76,14 +76,19 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<String> 
         progressIndicator.visibility= if(loading)  View.VISIBLE else View.INVISIBLE
     }
 
-    class MyTaskLoader(var ctx : Context, var args : Bundle?) : AsyncTaskLoader<String>(ctx) {
+    class MyTaskLoader(var ctx : Context, var args : Bundle?, var mSongs : List<String>) : AsyncTaskLoader<String>(ctx) {
         private var DATA_KEY = "data_key"
+
         override fun loadInBackground(): String? {
             Log.d("MyTaskLoader", "loadInBackground, Thread started - ${Thread.currentThread().name}")
-            if(args!=null){
-                Log.d("MyTaskLoader", "loadInBackground, Data = ${args!!.getString(DATA_KEY)}")
+//            if(args!=null){
+//                Log.d("MyTaskLoader", "loadInBackground, Data = ${args!!.getString(DATA_KEY)}")
+//            }
+            for(song in mSongs){
+                Log.d("MyTaskLoader", "loadInBackground, Downloading $song")
+                Thread.sleep(2000)
             }
-            Thread.sleep(4000)
+//            Thread.sleep(4000)
             Log.d("MyTaskLoader", "loadInBackground, Thread completed - ${Thread.currentThread().name}")
             return null;
         }
@@ -91,7 +96,8 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<String> 
     }
 
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<String> {
-        return MyTaskLoader(this,args)
+        val songs = listOf<String>("Song 1","Song 2","Song 3")
+        return MyTaskLoader(this,args,songs)
     }
 
     override fun onLoadFinished(loader: Loader<String>, data: String?) {

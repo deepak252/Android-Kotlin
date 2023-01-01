@@ -20,6 +20,7 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<String> 
     private lateinit var btnRun : Button
     private lateinit var btnClear : Button
     private lateinit var progressIndicator : ProgressBar
+    private var DATA_KEY = "data_key"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,8 +51,10 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<String> 
     private fun runCode(){
         logMessage("\nRunning Code")
 //        showProgressIndicator(true)
-        // Will trigger "onCreateLoader" method
-        supportLoaderManager.initLoader(1000,null,this).forceLoad()
+        val bundle = Bundle()
+        bundle.putString(DATA_KEY,"Sample Data")
+        // forceLoad() Will trigger "onCreateLoader" method
+        supportLoaderManager.initLoader(1000,bundle,this).forceLoad()
 
     }
 
@@ -73,18 +76,22 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<String> 
         progressIndicator.visibility= if(loading)  View.VISIBLE else View.INVISIBLE
     }
 
-    class MyTaskLoader( context : Context) : AsyncTaskLoader<String>(context) {
+    class MyTaskLoader(var ctx : Context, var args : Bundle?) : AsyncTaskLoader<String>(ctx) {
+        private var DATA_KEY = "data_key"
         override fun loadInBackground(): String? {
-            Log.d("MyTaskLoader", "loadInBackground : Thread started - ${Thread.currentThread().name}")
+            Log.d("MyTaskLoader", "loadInBackground, Thread started - ${Thread.currentThread().name}")
+            if(args!=null){
+                Log.d("MyTaskLoader", "loadInBackground, Data = ${args!!.getString(DATA_KEY)}")
+            }
             Thread.sleep(4000)
-            Log.d("MyTaskLoader", "loadInBackground : Thread completed - ${Thread.currentThread().name}")
+            Log.d("MyTaskLoader", "loadInBackground, Thread completed - ${Thread.currentThread().name}")
             return null;
         }
 
     }
 
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<String> {
-        return MyTaskLoader(this)
+        return MyTaskLoader(this,args)
     }
 
     override fun onLoadFinished(loader: Loader<String>, data: String?) {

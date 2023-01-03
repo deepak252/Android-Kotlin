@@ -55,9 +55,6 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra(MESSAGE_KEY, song)
             startService(intent)
         }
-
-//        showProgressIndicator(false)
-
     }
 
 
@@ -71,7 +68,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun clearCode(){
+        showProgressIndicator(false)
         edtCode.setText("")
+        val intent = Intent(this,MyDownloadService::class.java)
+        //Stops service completely, onDestroy()
+        stopService(intent)
     }
 
     private fun showProgressIndicator(loading:Boolean){

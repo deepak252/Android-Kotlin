@@ -7,9 +7,17 @@ import android.util.Log
 
 class MyDownloadService : Service() {
 
+
+    override fun onCreate() {
+        super.onCreate()
+        Log.d("MyDownloadService","onCreate Called")
+    }
+
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val song =intent?.getStringExtra(MainActivity.MESSAGE_KEY)
-        Log.d("Thread Name: ",Thread.currentThread().name)
+        Log.d("MyDownloadService","onStartCommand Called")
+//        Log.d("Thread Name: ",Thread.currentThread().name)
         if(song!=null){
             val runnable = object : Runnable{
                 override fun run() {
@@ -24,7 +32,13 @@ class MyDownloadService : Service() {
     }
 
     override fun onBind(intent: Intent): IBinder {
+        Log.d("MyDownloadService","onBind Called")
         TODO("Return the communication channel to the service.")
+    }
+
+    override fun onDestroy() {
+        Log.d("MyDownloadService","onDestroy Called")
+        super.onDestroy()
     }
 
     private fun downloadSong( song : String){

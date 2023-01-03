@@ -9,8 +9,15 @@ class MyDownloadService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val song =intent?.getStringExtra(MainActivity.MESSAGE_KEY)
+        Log.d("Thread Name: ",Thread.currentThread().name)
         if(song!=null){
-            downloadSong(song)
+            val runnable = object : Runnable{
+                override fun run() {
+                    downloadSong(song)
+                }
+            }
+            val thread = Thread(runnable)
+            thread.start()
         }
 //        return super.onStartCommand(intent, flags, startId)
         return Service.START_REDELIVER_INTENT

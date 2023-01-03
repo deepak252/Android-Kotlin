@@ -3,14 +3,20 @@ package com.academy.a06a_serrvices_createstartedservice
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
+import android.os.Message
 import android.util.Log
 
 class MyDownloadService : Service() {
-
+    var mDownloadThread : DownloadThread?=null
 
     override fun onCreate() {
         super.onCreate()
         Log.d("MyDownloadService","onCreate Called")
+        mDownloadThread = DownloadThread()
+        mDownloadThread?.start()
+        while(mDownloadThread!!.mHandler==null){
+
+        }
     }
 
 
@@ -19,13 +25,9 @@ class MyDownloadService : Service() {
         Log.d("MyDownloadService","onStartCommand Called")
 //        Log.d("Thread Name: ",Thread.currentThread().name)
         if(song!=null){
-            val runnable = object : Runnable{
-                override fun run() {
-                    downloadSong(song)
-                }
-            }
-            val thread = Thread(runnable)
-            thread.start()
+            val message = Message()
+            message.obj=song
+            mDownloadThread!!.mHandler?.sendMessage(message)
         }
 //        return super.onStartCommand(intent, flags, startId)
         return Service.START_REDELIVER_INTENT
@@ -41,9 +43,4 @@ class MyDownloadService : Service() {
         super.onDestroy()
     }
 
-    private fun downloadSong( song : String){
-        Log.d("MyDownloadService", "Starting Download - $song")
-        Thread.sleep(4000)
-        Log.d("MyDownloadService", "Download Complete - $song")
-    }
 }

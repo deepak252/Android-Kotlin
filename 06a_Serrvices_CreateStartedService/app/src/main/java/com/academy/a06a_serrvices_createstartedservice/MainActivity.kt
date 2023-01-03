@@ -1,18 +1,23 @@
 package com.academy.a06a_serrvices_createstartedservice
 
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
+import com.academy.a05c_thread_backgroundthread_class.Playlist
 
 class MainActivity : AppCompatActivity() {
     private lateinit var edtCode : EditText
     private lateinit var btnRun : Button
     private lateinit var btnClear : Button
     private lateinit var progressIndicator : ProgressBar
+    companion object {
+        var MESSAGE_KEY = "message_key"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,8 +49,14 @@ class MainActivity : AppCompatActivity() {
     private fun runCode(){
         logMessage("\nRunning Code")
         showProgressIndicator(true)
+        //Send Intent to MyDownloadService
+        for(song in Playlist.songs){
+            val intent = Intent(this,MyDownloadService::class.java)
+            intent.putExtra(MESSAGE_KEY, song)
+            startService(intent)
+        }
 
-        showProgressIndicator(false)
+//        showProgressIndicator(false)
 
     }
 

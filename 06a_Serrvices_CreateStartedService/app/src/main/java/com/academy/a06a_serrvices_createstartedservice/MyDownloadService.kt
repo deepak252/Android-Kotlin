@@ -2,32 +2,28 @@ package com.academy.a06a_serrvices_createstartedservice
 
 import android.app.Service
 import android.content.Intent
+import android.os.AsyncTask
 import android.os.IBinder
 import android.os.Message
 import android.util.Log
+import com.academy.a05c_thread_backgroundthread_class.Playlist
 
 class MyDownloadService : Service() {
-    var mDownloadThread : DownloadThread?=null
 
     override fun onCreate() {
         super.onCreate()
         Log.d("MyDownloadService","onCreate Called")
-        mDownloadThread = DownloadThread()
-        mDownloadThread?.start()
-        while(mDownloadThread!!.mHandler==null){
-
-        }
     }
 
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val song =intent?.getStringExtra(MainActivity.MESSAGE_KEY)
         Log.d("MyDownloadService","onStartCommand Called")
-//        Log.d("Thread Name: ",Thread.currentThread().name)
-        if(song!=null){
-            val message = Message()
-            message.obj=song
-            mDownloadThread!!.mHandler?.sendMessage(message)
+
+        val myDownloadTask = MyDownloadTask()
+        if(song!=null) {
+            // separate AsyncTask execution for each song
+            myDownloadTask.execute(song)
         }
 //        return super.onStartCommand(intent, flags, startId)
         return Service.START_REDELIVER_INTENT
@@ -41,6 +37,24 @@ class MyDownloadService : Service() {
     override fun onDestroy() {
         Log.d("MyDownloadService","onDestroy Called")
         super.onDestroy()
+    }
+
+    class MyDownloadTask : AsyncTask<String, String,String>(){
+        override fun doInBackground(vararg songs: String?): String {
+            for(song in songs){
+                Log.d("MyDownloadTask","onProgressUpdate, Downloading song - $song")
+                Thread.sleep(4000)
+
+            }
+            return "All songs have been downloaded"
+        }
+
+        override fun onProgressUpdate(vararg values: String?) {
+            Log.d("MyDownloadTask","onProgressUpdate, Song Downloaded - ${values[0]}")
+        }
+        override fun onPostExecute(result: String?) {
+            Log.d("MyDownloadTask","onPostExecute, $result")
+        }
     }
 
 }

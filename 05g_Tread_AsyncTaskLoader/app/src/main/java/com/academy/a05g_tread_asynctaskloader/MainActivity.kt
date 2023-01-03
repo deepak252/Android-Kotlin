@@ -80,6 +80,7 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<String> 
         private var DATA_KEY = "data_key"
 
         override fun loadInBackground(): String? {
+            Thread.currentThread().name="myDownloadThread"
             Log.d("MyTaskLoader", "loadInBackground, Thread started - ${Thread.currentThread().name}")
 //            if(args!=null){
 //                Log.d("MyTaskLoader", "loadInBackground, Data = ${args!!.getString(DATA_KEY)}")

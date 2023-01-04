@@ -19,6 +19,7 @@ class MyDownloadService : Service() {
         while(mDownloadThread?.mHandler==null){
             Log.d("MyDownloadService","onCreate : mHandler is null")
         }
+        mDownloadThread!!.mHandler!!.mDownloadService = this
     }
 
 
@@ -30,6 +31,7 @@ class MyDownloadService : Service() {
             if(mDownloadThread?.mHandler!=null){
                 val message = Message()
                 message.obj = song
+                message.arg1=startId
                 mDownloadThread!!.mHandler!!.sendMessage(message)
             }else{
                 Log.d("onStartCommand","mHandler is NULL")

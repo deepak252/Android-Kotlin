@@ -7,8 +7,15 @@ import android.util.Log
 
 
 class DownloadHandler(looper : Looper) : Handler(looper) {
+    var mDownloadService: MyDownloadService?=null
+
     override fun handleMessage(msg: Message) {
         downloadSong(msg.obj.toString())
+//        mDownloadService?.stopSelf()
+//        mDownloadService?.stopSelf(msg.arg1)  //with StartId
+        // Stop Service for most recent StartId (msg.arg1)
+        val stopSelfResult = mDownloadService?.stopSelfResult(msg.arg1)
+        Log.d("DownloadHandler", "handleMessage, stopSelfResult = $stopSelfResult")
         super.handleMessage(msg)
     }
 

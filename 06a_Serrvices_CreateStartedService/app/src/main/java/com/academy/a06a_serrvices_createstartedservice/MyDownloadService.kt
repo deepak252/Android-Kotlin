@@ -2,9 +2,7 @@ package com.academy.a06a_serrvices_createstartedservice
 
 import android.app.Service
 import android.content.Intent
-import android.os.AsyncTask
-import android.os.IBinder
-import android.os.Message
+import android.os.*
 import android.util.Log
 import com.academy.a05c_thread_backgroundthread_class.Playlist
 
@@ -26,6 +24,8 @@ class MyDownloadService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val song =intent?.getStringExtra(MainActivity.MESSAGE_KEY)
         Log.d("MyDownloadService","onStartCommand Called, startId = $startId")
+
+        mDownloadThread?.mHandler?.mResultReceiver = intent!!.getParcelableExtra(Intent.EXTRA_RESULT_RECEIVER)
 
         if(song!=null) {
             if(mDownloadThread?.mHandler!=null){

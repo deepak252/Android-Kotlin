@@ -1,16 +1,17 @@
 package com.academy.a06a_serrvices_createstartedservice
 
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.ResultReceiver
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.academy.a05c_thread_backgroundthread_class.Playlist
 
 class MainActivity : AppCompatActivity() {
@@ -22,6 +23,12 @@ class MainActivity : AppCompatActivity() {
         const val MESSAGE_KEY = "message_key"
         const val RESULT_OK = 200
     }
+    var mReceiver  = object:BroadcastReceiver(){
+        override fun onReceive(ctx: Context?, intent: Intent?) {
+            val song = intent?.getStringExtra(MESSAGE_KEY)
+            logMessage("\n"+song.toString())
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +38,15 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun onStart() {
+        super.onStart()
+        LocalBroadcastManager.getInstance(applicationContext).registerReceiver(mReceiver, IntentFilter(DownloadHandler.SERVICE_MESSAGE));
+    }
+
+    override fun onStop() {
+        super.onStop()
+        LocalBroadcastManager.getInstance(applicationContext).unregisterReceiver(mReceiver)
+    }
     private fun initViews(){
         edtCode = findViewById(R.id.edtCode)
         btnRun = findViewById(R.id.btnRun)

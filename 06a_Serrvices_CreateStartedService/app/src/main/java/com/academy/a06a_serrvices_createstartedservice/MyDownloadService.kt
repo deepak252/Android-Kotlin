@@ -18,6 +18,8 @@ class MyDownloadService : Service() {
             Log.d("MyDownloadService","onCreate : mHandler is null")
         }
         mDownloadThread!!.mHandler!!.mDownloadService = this
+        //applicationContext is available in Service but not in Handler
+        mDownloadThread!!.mHandler!!.mContext = applicationContext
     }
 
 

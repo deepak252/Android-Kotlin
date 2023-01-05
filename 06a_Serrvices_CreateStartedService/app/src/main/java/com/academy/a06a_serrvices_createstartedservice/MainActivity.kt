@@ -22,14 +22,12 @@ class MainActivity : AppCompatActivity() {
         const val MESSAGE_KEY = "message_key"
         const val RESULT_OK = 200
     }
-    private var mHandler : Handler?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         initViews()
-        mHandler= Handler(mainLooper)
 
     }
 
@@ -55,13 +53,10 @@ class MainActivity : AppCompatActivity() {
         logMessage("\nRunning Code")
         showProgressIndicator(true)
 
-        val mDownloadResultReceiver = MyDownloadResultReceiver(null)
         //Send Intent to MyDownloadService
         for(song in Playlist.songs){
             val intent = Intent(this,MyDownloadService::class.java)
             intent.putExtra(MESSAGE_KEY, song)
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            intent.putExtra(Intent.EXTRA_RESULT_RECEIVER, mDownloadResultReceiver)
             startService(intent)
         }
     }
@@ -88,23 +83,4 @@ class MainActivity : AppCompatActivity() {
         progressIndicator.visibility= if(loading)  View.VISIBLE else View.INVISIBLE
     }
 
-    inner class MyDownloadResultReceiver(val handler : Handler?) : ResultReceiver(handler){
-        override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
-            super.onReceiveResult(resultCode, resultData)
-            Log.d("MDownloadResultReceiver","onReceiveResult, ResultCode = $resultCode, resultData = $resultData, thread : ${Thread.currentThread().name}")
-            if(resultCode ==  RESULT_OK && resultData!=null){
-                val songName = resultData.getString(MESSAGE_KEY).toString()
-//                runOnUiThread(object : Runnable{
-//                    override fun run() {
-//                        logMessage("\n"+songName)
-//                    }
-//                })
-                mHandler?.post(object : Runnable{
-                    override fun run() {
-                        logMessage("\n"+songName)
-                    }
-                })
-            }
-        }
-    }
 }

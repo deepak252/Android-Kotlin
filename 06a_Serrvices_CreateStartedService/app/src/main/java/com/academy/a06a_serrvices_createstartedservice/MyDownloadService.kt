@@ -25,8 +25,6 @@ class MyDownloadService : Service() {
         val song =intent?.getStringExtra(MainActivity.MESSAGE_KEY)
         Log.d("MyDownloadService","onStartCommand Called, startId = $startId")
 
-        mDownloadThread?.mHandler?.mResultReceiver = intent!!.getParcelableExtra(Intent.EXTRA_RESULT_RECEIVER)
-
         if(song!=null) {
             if(mDownloadThread?.mHandler!=null){
                 val message = Message()
@@ -50,23 +48,5 @@ class MyDownloadService : Service() {
         Log.d("MyDownloadService","onDestroy Called")
         super.onDestroy()
     }
-
-//    class MyDownloadTask : AsyncTask<String, String,String>(){
-//        override fun doInBackground(vararg songs: String?): String {
-//            for(song in songs){
-//                Log.d("MyDownloadTask","onProgressUpdate, Downloading song - $song")
-//                Thread.sleep(4000)
-//
-//            }
-//            return "All songs have been downloaded"
-//        }
-//
-//        override fun onProgressUpdate(vararg values: String?) {
-//            Log.d("MyDownloadTask","onProgressUpdate, Song Downloaded - ${values[0]}")
-//        }
-//        override fun onPostExecute(result: String?) {
-//            Log.d("MyDownloadTask","onPostExecute, $result")
-//        }
-//    }
 
 }

@@ -6,7 +6,6 @@ import android.util.Log
 
 class DownloadHandler(looper : Looper) : Handler(looper) {
     var mDownloadService: MyDownloadService?=null
-    var mResultReceiver : ResultReceiver?=null
 
     override fun handleMessage(msg: Message) {
         downloadSong(msg.obj.toString())
@@ -14,12 +13,8 @@ class DownloadHandler(looper : Looper) : Handler(looper) {
 //        mDownloadService?.stopSelf(msg.arg1)  //with StartId
         // Stop Service for most recent StartId (msg.arg1)
         val stopSelfResult = mDownloadService?.stopSelfResult(msg.arg1)
-        Log.d("DownloadHandler", "handleMessage, stopSelfResult = $stopSelfResult")
+//        Log.d("DownloadHandler", "handleMessage, stopSelfResult = $stopSelfResult")
 
-        val bundle = Bundle()
-        bundle.putString(MainActivity.MESSAGE_KEY,msg.obj.toString())
-        // Trigger callback to onReceiveResult in MyDownloadResultReceiver
-        mResultReceiver?.send(MainActivity.RESULT_OK,bundle)
         super.handleMessage(msg)
     }
 

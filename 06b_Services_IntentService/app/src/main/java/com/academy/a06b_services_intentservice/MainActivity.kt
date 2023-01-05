@@ -1,5 +1,6 @@
 package com.academy.a06b_services_intentservice
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -45,6 +46,12 @@ class MainActivity : AppCompatActivity() {
     private fun runCode(){
         logMessage("\nRunning Code")
         showProgressIndicator(true)
+        for(song in Playlist.songs){
+            val intent = Intent(this,MyIntentService ::class.java)
+            intent.putExtra(MESSAGE_KEY, song)
+            startService(intent)
+        }
+
 
     }
 

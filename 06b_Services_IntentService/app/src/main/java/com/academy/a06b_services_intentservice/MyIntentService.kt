@@ -4,10 +4,13 @@ import android.app.IntentService
 import android.content.Intent
 import android.content.Context
 import android.util.Log
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 
 
 class MyIntentService : IntentService("MyIntentService") {
-
+    companion object{
+        const val SERVICE_MESSAGE = "serviceMessage"
+    }
     override fun onCreate() {
         super.onCreate()
         Log.d("onCreate","Thread Name = ${Thread.currentThread().name}")
@@ -18,19 +21,14 @@ class MyIntentService : IntentService("MyIntentService") {
         val song = intent?.getStringExtra(MainActivity.MESSAGE_KEY)
         if(song!=null){
             downloadSong(song)
+            sendMessageToUI(song)
         }
-//        when (intent?.action) {
-//            ACTION_FOO->  {
-//                val param1 = intent.getStringExtra(EXTRA_PARAM1)
-//                val param2 = intent.getStringExtra(EXTRA_PARAM2)
-//                handleActionFoo(param1, param2)
-//            }
-//            ACTION_BAZ -> {
-//                val param1 = intent.getStringExtra(EXTRA_PARAM1)
-//                val param2 = intent.getStringExtra(EXTRA_PARAM2)
-//                handleActionBaz(param1, param2)
-//            }
-//        }
+    }
+
+    private fun sendMessageToUI(msg: String){
+        val intent = Intent(SERVICE_MESSAGE)
+        intent.putExtra(MainActivity.MESSAGE_KEY,msg)
+        LocalBroadcastManager.getInstance(applicationContext).sendBroadcast(intent)
     }
 
     override fun onDestroy() {
@@ -43,37 +41,6 @@ class MyIntentService : IntentService("MyIntentService") {
         Thread.sleep(4000)
         Log.d("downloadSong", "Download Complete - $song")
     }
-
-//    private fun handleActionFoo(param1: String?, param2: String?) {
-//        TODO("Handle action Foo")
-//    }
-//
-//
-//    private fun handleActionBaz(param1: String?, param2: String?) {
-//        TODO("Handle action Baz")
-//    }
-//
-//    companion object {
-//        @JvmStatic
-//        fun startActionFoo(context: Context, param1: String, param2: String) {
-//            val intent = Intent(context, MyIntentService::class.java).apply {
-//                action = ACTION_FOO
-//                putExtra(EXTRA_PARAM1, param1)
-//                putExtra(EXTRA_PARAM2, param2)
-//            }
-//            context.startService(intent)
-//        }
-//
-//        @JvmStatic
-//        fun startActionBaz(context: Context, param1: String, param2: String) {
-//            val intent = Intent(context, MyIntentService::class.java).apply {
-//                action = ACTION_BAZ
-//                putExtra(EXTRA_PARAM1, param1)
-//                putExtra(EXTRA_PARAM2, param2)
-//            }
-//            context.startService(intent)
-//        }
-//    }
 
 
 }

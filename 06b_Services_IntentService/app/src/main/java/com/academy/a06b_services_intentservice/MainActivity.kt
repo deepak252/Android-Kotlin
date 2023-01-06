@@ -1,12 +1,17 @@
 package com.academy.a06b_services_intentservice
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 
 class MainActivity : AppCompatActivity() {
     private lateinit var edtCode : EditText
@@ -17,12 +22,33 @@ class MainActivity : AppCompatActivity() {
         const val MESSAGE_KEY = "message_key"
     }
 
+    val mReceiver = object: BroadcastReceiver(){
+        override fun onReceive(ctx: Context?, intent: Intent?) {
+            val song = intent?.getStringExtra(MESSAGE_KEY)
+            if(song!=null){
+                Log.d("BroadcastReceiver","onReceive, THREAD : ${Thread.currentThread().name}")
+                logMessage("\n"+song)
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         initViews()
+    }
 
+    override fun onStart() {
+        super.onStart()
+        LocalBroadcastManager.getInstance(applicationContext).registerReceiver(mReceiver,
+            IntentFilter(MyIntentService.SERVICE_MESSAGE)
+        )
+    }
+
+    override fun onStop() {
+        super.onStop()
+        LocalBroadcastManager.getInstance(applicationContext).unregisterReceiver(mReceiver)
     }
 
     private fun initViews(){
@@ -51,8 +77,6 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra(MESSAGE_KEY, song)
             startService(intent)
         }
-
-
     }
 
 

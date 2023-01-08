@@ -1,8 +1,13 @@
 package com.academy.a06c_services_boundservice
 
 
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.ServiceConnection
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.IBinder
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -18,25 +23,44 @@ class MainActivity : AppCompatActivity() {
     companion object {
         const val MESSAGE_KEY = "message_key"
     }
+    private var mMusicPlayerService : MusicPlayerService?=null
+    private var mBound = false
+    private val mServiceConnection = object : ServiceConnection{
+        override fun onServiceConnected(name: ComponentName?, iBinder: IBinder?) {
+            val myServiceBinder : MusicPlayerService.MyServiceBinder = iBinder as MusicPlayerService.MyServiceBinder
+            mMusicPlayerService = myServiceBinder.getService()
+            mBound = true
+            Log.d("ServiceConnection", "onServiceConnected : Connected")
+        }
+
+        override fun onServiceDisconnected(p0: ComponentName?) {
+            // Triggered on unexpected crash, not on unBind()
+            Log.d("ServiceConnection", "onServiceConnected : Disconnected")
+        }
+
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        Log.d("Msg", "onCreate")
-
         initViews()
     }
 
     override fun onStart() {
         super.onStart()
-        Log.d("Msg", "onStart")
+        val intent = Intent(this, MusicPlayerService::class.java)
+        // Will call onBind() method from MusicPlayerService class
+        bindService(intent,mServiceConnection,Context.BIND_AUTO_CREATE)
     }
 
     override fun onStop() {
         super.onStop()
-        Log.d("Msg", "onStop")
+        if(mBound){
+            unbindService(mServiceConnection)
+            mBound=false
+        }
     }
 
     private fun initViews(){

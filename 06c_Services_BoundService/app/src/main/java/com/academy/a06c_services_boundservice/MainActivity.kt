@@ -1,10 +1,7 @@
 package com.academy.a06c_services_boundservice
 
 
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
-import android.content.ServiceConnection
+import android.content.*
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.IBinder
@@ -19,6 +16,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var edtCode : EditText
     private lateinit var btnRun : Button
     private lateinit var btnClear : Button
+    private lateinit var btnPlayer : Button
     private lateinit var progressIndicator : ProgressBar
     companion object {
         const val MESSAGE_KEY = "message_key"
@@ -40,6 +38,16 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    val mReceiver = object : BroadcastReceiver(){
+        override fun onReceive(ctx: Context?, intent: Intent?) {
+            val msg = intent?.getStringExtra(MESSAGE_KEY)
+            if(msg=="done"){
+                btnPlayer.text = "PLAY"
+            }
+        }
+
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +61,9 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, MusicPlayerService::class.java)
         // Will call onBind() method from MusicPlayerService class
         bindService(intent,mServiceConnection,Context.BIND_AUTO_CREATE)
+        LocalBroadcastManager.getInstance(applicationContext).registerReceiver(mReceiver,
+            IntentFilter(MusicPlayerService.MUSIC_COMPLETE)
+        )
     }
 
     override fun onStop() {
@@ -61,16 +72,18 @@ class MainActivity : AppCompatActivity() {
             unbindService(mServiceConnection)
             mBound=false
         }
+        LocalBroadcastManager.getInstance(applicationContext).unregisterReceiver(mReceiver)
     }
 
     private fun initViews(){
         edtCode = findViewById(R.id.edtCode)
         btnRun = findViewById(R.id.btnRun)
         btnClear = findViewById(R.id.btnClear)
+        btnPlayer = findViewById(R.id.btnPlayer)
         progressIndicator = findViewById(R.id.progressIndicator)
         showProgressIndicator(false)
 
-        edtCode.setText(R.string.lorem_ipsum)
+//        edtCode.setText(R.string.lorem_ipsum)
 
         btnClear.setOnClickListener{
             clearCode()
@@ -79,16 +92,26 @@ class MainActivity : AppCompatActivity() {
         btnRun.setOnClickListener{
             runCode()
         }
+        btnPlayer.setOnClickListener{
+            onBtnPlayerClicked()
+        }
+    }
+
+    private fun onBtnPlayerClicked(){
+        if(mBound){
+            if(mMusicPlayerService?.isPlaying()==true){
+                mMusicPlayerService!!.pause()
+                btnPlayer.text = "PLAY"
+            }else{
+                mMusicPlayerService!!.play()
+                btnPlayer.text = "PAUSE"
+            }
+        }
     }
 
     private fun runCode(){
         logMessage("\nRunning Code")
         showProgressIndicator(true)
-//        for(song in Playlist.songs){
-//            val intent = Intent(this,MyIntentService ::class.java)
-//            intent.putExtra(MESSAGE_KEY, song)
-//            startService(intent)
-//        }
     }
 
 

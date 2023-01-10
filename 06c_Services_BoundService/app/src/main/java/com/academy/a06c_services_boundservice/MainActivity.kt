@@ -103,6 +103,8 @@ class MainActivity : AppCompatActivity() {
                 mMusicPlayerService!!.pause()
                 btnPlayer.text = "PLAY"
             }else{
+                val intent = Intent(this,MusicPlayerService::class.java)
+                startService(intent)
                 mMusicPlayerService!!.play()
                 btnPlayer.text = "PAUSE"
             }

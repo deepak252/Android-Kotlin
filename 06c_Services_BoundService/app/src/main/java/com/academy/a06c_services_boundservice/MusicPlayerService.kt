@@ -25,6 +25,8 @@ class MusicPlayerService : Service() {
             val intent = Intent(MUSIC_COMPLETE)
             intent.putExtra(MainActivity.MESSAGE_KEY, "done")
             LocalBroadcastManager.getInstance(applicationContext).sendBroadcast(intent)
+
+            stopSelf()
         }
 
     }
@@ -35,9 +37,15 @@ class MusicPlayerService : Service() {
         }
     }
 
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d("MusicPlayerService","onStartCommand")
-        return super.onStartCommand(intent, flags, startId)
+        return START_NOT_STICKY
+    }
+
+    override fun onRebind(intent: Intent?) {
+        Log.d("MusicPlayerService","onRebind")
+        super.onRebind(intent)
     }
 
     override fun onBind(intent: Intent): IBinder {
@@ -47,7 +55,9 @@ class MusicPlayerService : Service() {
 
     override fun onUnbind(intent: Intent?): Boolean {
         Log.d("MusicPlayerService","onUnbind")
-        return super.onUnbind(intent)
+        // true : call onRebind() , false : onBind().
+        // onRebind() returns void, client still receives the IBinder in its onServiceConnected callback
+        return true
     }
 
     override fun onDestroy() {

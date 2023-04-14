@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
 
         btn1.setOnClickListener{
 //            A.performTask()
-//            B.performTask()
+            B.performTask()
 //            D.performTask()
 //            E.performTask()
 

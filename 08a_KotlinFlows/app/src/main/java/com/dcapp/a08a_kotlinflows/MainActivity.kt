@@ -22,8 +22,9 @@ class MainActivity : AppCompatActivity() {
 //            A.consumer()
 //            A.producer()
 
-            B.start()
+//            B.start()
 //            C.start()
+            D.start()
 
         }
 

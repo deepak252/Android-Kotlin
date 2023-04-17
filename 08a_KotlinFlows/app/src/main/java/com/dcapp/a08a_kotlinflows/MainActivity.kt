@@ -24,7 +24,9 @@ class MainActivity : AppCompatActivity() {
 
 //            B.start()
 //            C.start()
-            D.start()
+//            D.start()
+            E.start()
+
 
         }
 

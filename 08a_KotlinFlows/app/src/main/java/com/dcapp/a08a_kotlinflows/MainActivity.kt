@@ -26,7 +26,8 @@ class MainActivity : AppCompatActivity() {
 //            C.start()
 //            D.start()
 //            E.start()
-            F.start()
+//            F.start()
+            G.start()
 
 
         }

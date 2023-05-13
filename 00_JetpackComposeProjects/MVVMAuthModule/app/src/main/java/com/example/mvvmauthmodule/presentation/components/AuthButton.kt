@@ -1,6 +1,7 @@
 package com.example.mvvmauthmodule.presentation.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -10,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.example.mvvmauthmodule.ui.theme.Gray900
 import com.example.mvvmauthmodule.ui.theme.White
 
@@ -24,7 +26,8 @@ fun AuthButton(
     onClick : ()->Unit
 ) {
     Button(
-        modifier = modifier,
+        modifier = modifier
+            .fillMaxWidth(),
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
             containerColor = backgroundColor,
@@ -34,12 +37,14 @@ fun AuthButton(
     ) {
         if(isLoading){
             CircularProgressIndicator(
-                color = White
+                color = White,
+                modifier = Modifier.padding(8.dp)
             )
         }else{
             Text(
                 text,
-                style = MaterialTheme.typography.bodyLarge
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.padding(8.dp)
             )
         }
     }
@@ -49,7 +54,6 @@ fun AuthButton(
 @Composable
 private fun AuthButtonPreview(){
     AuthButton(
-        modifier = Modifier.fillMaxWidth(),
         text = "Login",
         onClick = {},
         isLoading = true

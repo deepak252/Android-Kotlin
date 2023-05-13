@@ -38,6 +38,10 @@ class RegisterViewModel @Inject constructor(
         registerState = registerState.copy(isConfirmPasswordShown = !registerState.isConfirmPasswordShown)
     }
 
+    fun onRegisterClick(){
+
+    }
+
     private fun checkInputValidation() {
         val validationResult = validateRegisterInputUseCase(
             registerState.emailInput,

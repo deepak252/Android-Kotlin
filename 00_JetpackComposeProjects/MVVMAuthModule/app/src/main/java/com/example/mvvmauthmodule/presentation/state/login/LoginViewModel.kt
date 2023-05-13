@@ -27,6 +27,10 @@ class LoginViewModel @Inject constructor(
         loginState = loginState.copy(isPasswordShown = !loginState.isPasswordShown)
     }
 
+    fun onLoginClick(){
+
+    }
+
     private fun checkInputValidation(){
         val validationResult = validateLoginInputUseCase(
             loginState.emailInput,

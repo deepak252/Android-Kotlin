@@ -35,7 +35,7 @@ fun AuthTextField(
     value : String,
     hintText : String = "",
     backgroundColor : Color = White,
-    textColor : Color = Gray900,
+    textColor : Color = Color.Black,
     cursorColor : Color =  MaterialTheme.colorScheme.primary,
     enabled : Boolean = true,
     onValueChange : (String)->Unit,
@@ -57,6 +57,9 @@ fun AuthTextField(
         colors = TextFieldDefaults.textFieldColors(
             containerColor = backgroundColor,
             cursorColor = cursorColor,
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent,
+            textColor = textColor
 //            unfocusedLabelColor = Gray400,
 //            placeholderColor = Gray400,
 //            focusedLabelColor = Blue500,
@@ -83,7 +86,11 @@ fun AuthTextField(
                 Icon(
                     imageVector = trailingIcon,
                     contentDescription = null,
-                    tint = cursorColor
+                    tint = cursorColor,
+                    modifier = Modifier
+                        .clickable {
+                            if(onTrailingIconClick != null) onTrailingIconClick()
+                        }
                 )
             }
         },
@@ -103,7 +110,6 @@ fun AuthTextField(
 @Composable
 private fun AuthTextFieldPreview(){
     AuthTextField(
-        modifier = Modifier.fillMaxWidth(),
         value = "1234",
         hintText = "Enter Password",
         onValueChange = {

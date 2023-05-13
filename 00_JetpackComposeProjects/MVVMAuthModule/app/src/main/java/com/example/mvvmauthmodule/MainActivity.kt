@@ -9,8 +9,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.mvvmauthmodule.nav_graph.RootNavGraph
+import com.example.mvvmauthmodule.ui.theme.Gray500
 import com.example.mvvmauthmodule.ui.theme.MVVMAuthModuleTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -19,8 +21,11 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.statusBarColor = Gray500.toArgb()
+        window.navigationBarColor = Gray500.toArgb()
+
         setContent {
-            MVVMAuthModuleTheme {
+            MVVMAuthModuleTheme(darkTheme = false) {
                 // A surface container using the 'background' color from the theme
                 RootNavGraph()
             }

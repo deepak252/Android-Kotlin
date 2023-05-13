@@ -2,14 +2,19 @@ package com.example.mvvmauthmodule.presentation.state.register
 
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.mvvmauthmodule.domain.model.RegisterInputValidationType
+import com.example.mvvmauthmodule.domain.repository.AuthRepository
 import com.example.mvvmauthmodule.domain.use_case.ValidateRegisterInputUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
-    private val validateRegisterInputUseCase: ValidateRegisterInputUseCase
+    private val validateRegisterInputUseCase: ValidateRegisterInputUseCase,
+    private val authRepository : AuthRepository
 ) :ViewModel()  {
     var registerState by mutableStateOf(
         RegisterUiState()
@@ -39,7 +44,17 @@ class RegisterViewModel @Inject constructor(
     }
 
     fun onRegisterClick(){
-
+        registerState = registerState.copy(isLoading = true)
+        viewModelScope.launch {
+            registerState = try {
+                val registerResult = authRepository.login(registerState.emailInput, registerState.passwordInput)
+                registerState.copy(isSuccessfullyRegistered = registerResult)
+            }catch (e : Exception){
+                registerState.copy(isSuccessfullyRegistered = false, errorMessageRegister = e.message)
+            }finally {
+                registerState = registerState.copy(isLoading = false)
+            }
+        }
     }
 
     private fun checkInputValidation() {

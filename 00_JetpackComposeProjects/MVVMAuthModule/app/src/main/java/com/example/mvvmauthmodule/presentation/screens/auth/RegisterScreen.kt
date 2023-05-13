@@ -32,6 +32,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.mvvmauthmodule.presentation.components.AuthButton
 import com.example.mvvmauthmodule.presentation.components.AuthTextField
 import com.example.mvvmauthmodule.presentation.components.HeaderBackground
+import com.example.mvvmauthmodule.presentation.components.NavDestinationHelper
 import com.example.mvvmauthmodule.presentation.state.register.RegisterViewModel
 import com.example.mvvmauthmodule.ui.theme.Blue500
 import com.example.mvvmauthmodule.ui.theme.Red500
@@ -44,6 +45,15 @@ fun RegisterScreen(
     onNavigateToLoginScreen : ()->Unit,
     registerViewModel: RegisterViewModel = hiltViewModel()
 ){
+    NavDestinationHelper(
+        shouldNavigate = {
+            registerViewModel.registerState.isSuccessfullyRegistered
+        },
+        destination = {
+            onRegisterSuccessNavigation()
+        }
+    )
+
     Scaffold() {paddingValues ->
         Column(
             modifier = Modifier
@@ -75,7 +85,7 @@ fun RegisterScreen(
                 onPasswordChange = registerViewModel::onPasswordInputChange,
                 onConfirmPasswordChange = registerViewModel::onConfirmPasswordInputChange,
                 errorHint = {registerViewModel.registerState.errorMessageInput},
-                isLoginButtonEnabled = {registerViewModel.registerState.isInputValid},
+                isRegisterButtonEnabled = {registerViewModel.registerState.isInputValid},
                 onLoginClick = onNavigateToLoginScreen,
                 onRegisterButtonClick = registerViewModel::onRegisterClick,
                 isPasswordShown = { registerViewModel.registerState.isPasswordShown },
@@ -107,7 +117,7 @@ private fun RegisterContainer(
     onPasswordChange : (String)->Unit,
     onConfirmPasswordChange : (String)->Unit,
     errorHint:()->String?,
-    isLoginButtonEnabled : ()->Boolean,
+    isRegisterButtonEnabled : ()->Boolean,
     onRegisterButtonClick : ()->Unit,
     onLoginClick : ()->Unit,
     isPasswordShown : ()->Boolean,
@@ -159,7 +169,8 @@ private fun RegisterContainer(
             modifier = Modifier.fillMaxWidth(),
             text = "Register",
             onClick = onRegisterButtonClick,
-            isLoading = isLoading()
+            isLoading = isLoading(),
+            enabled = isRegisterButtonEnabled()
         )
         Text(
             text =  errorHint()?:"",
@@ -184,9 +195,6 @@ private fun RegisterContainer(
                 }
             )
         }
-
-
-
     }
 }
 
@@ -201,7 +209,7 @@ private fun LoginContainerPreview(){
         onPasswordChange ={},
         onConfirmPasswordChange ={},
         errorHint = {"Error"},
-        isLoginButtonEnabled = {true},
+        isRegisterButtonEnabled = {true},
         onRegisterButtonClick = {},
         onLoginClick = {},
         isPasswordShown = { true },

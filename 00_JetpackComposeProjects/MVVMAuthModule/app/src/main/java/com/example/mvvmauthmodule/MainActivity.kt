@@ -25,10 +25,13 @@ class MainActivity : ComponentActivity() {
         window.navigationBarColor = Gray500.toArgb()
 
         setContent {
-            MVVMAuthModuleTheme(darkTheme = false) {
-                // A surface container using the 'background' color from the theme
+            Surface() {
                 RootNavGraph()
             }
+//            MVVMAuthModuleTheme(darkTheme = false) {
+//                // A surface container using the 'background' color from the theme
+//                RootNavGraph()
+//            }
         }
     }
 }

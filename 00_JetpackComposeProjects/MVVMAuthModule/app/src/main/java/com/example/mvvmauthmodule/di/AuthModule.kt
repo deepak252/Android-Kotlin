@@ -1,5 +1,7 @@
 package com.example.mvvmauthmodule.di
 
+import com.example.mvvmauthmodule.data.AuthRepositoryImpl
+import com.example.mvvmauthmodule.domain.repository.AuthRepository
 import com.example.mvvmauthmodule.domain.use_case.ValidateLoginInputUseCase
 import com.example.mvvmauthmodule.domain.use_case.ValidateRegisterInputUseCase
 import dagger.Module
@@ -22,5 +24,11 @@ object AuthModule {
     @Singleton
     fun provideValidateRegisterInputUseCase() : ValidateRegisterInputUseCase{
         return ValidateRegisterInputUseCase()
+    }
+
+    @Provides
+    @Singleton
+    fun provideAuthRepository() : AuthRepository{
+        return AuthRepositoryImpl()
     }
 }

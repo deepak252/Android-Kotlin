@@ -11,10 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Key
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -22,6 +18,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -29,6 +27,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.mvvmauthmodule.R
 import com.example.mvvmauthmodule.presentation.components.AuthButton
 import com.example.mvvmauthmodule.presentation.components.AuthTextField
 import com.example.mvvmauthmodule.presentation.components.HeaderBackground
@@ -141,10 +140,10 @@ private fun RegisterContainer(
             value = passwordValue(),
             onValueChange = onPasswordChange,
             hintText = "Enter password",
-            leadingIcon = Icons.Default.Key,
+            leadingIcon = ImageVector.vectorResource(id = R.drawable.baseline_key_24),
             trailingIcon = if(isPasswordShown())
-                Icons.Default.VisibilityOff
-            else Icons.Default.Visibility,
+                ImageVector.vectorResource(id = R.drawable.baseline_visibility_off_24)
+            else ImageVector.vectorResource(id = R.drawable.baseline_visibility_24),
             onTrailingIconClick = onPasswordVisibilityIconClick,
             visualTransformation = if(isPasswordShown()){
                 VisualTransformation.None
@@ -155,10 +154,10 @@ private fun RegisterContainer(
             value = confirmPasswordValue(),
             onValueChange = onConfirmPasswordChange,
             hintText = "Confirm password",
-            leadingIcon = Icons.Default.Key,
+            leadingIcon = ImageVector.vectorResource(id = R.drawable.baseline_key_24),
             trailingIcon = if(isConfirmPasswordShown())
-                Icons.Default.VisibilityOff
-            else Icons.Default.Visibility,
+                ImageVector.vectorResource(id = R.drawable.baseline_visibility_off_24)
+            else ImageVector.vectorResource(id = R.drawable.baseline_visibility_24),
             onTrailingIconClick = onConfirmPasswordVisibilityIconClick,
             visualTransformation = if(isConfirmPasswordShown()){
                 VisualTransformation.None

@@ -16,15 +16,54 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Orange700,
-    secondary = Orange500,
-    tertiary = Teal500
+//    primary = Orange700,
+//    secondary = Orange500,
+//    tertiary = Teal500,
+
+    primary = Blue500, // Status bar, Button, TF-Label
+    onPrimary = White, // Text on Button
+    primaryContainer = NavyBlue700,
+//    onPrimaryContainer = White,
+//    inversePrimary = Blue500,
+    secondary = NavyBlue900, //
+    onSecondary = White, // Text Color (on Screen),
+    secondaryContainer = Blue700, // Bottom Navigation Indicator,
+    // {CustomSolidButton}
+//    onSecondaryContainer = White,
+    tertiary = NavyBlue500, //{}
+//    onTertiary = White,
+//    onTertiaryContainer = White,
+    background = NavyBlue900, // Scaffold, Screen BG color
+    onBackground = White,  //
+    surface = NavyBlue700, //appbar, bottom navigation,
+    onSurface = White, //
+//    surfaceVariant = Blue500,
+    onSurfaceVariant = White, //
+    surfaceTint = Blue500, //
+//    inverseSurface = Blue500,
+//    inverseOnSurface = Blue500,
+//    error = error,
+//    onError = onError,
+//    errorContainer = errorContainer,
+//    onErrorContainer = onErrorContainer,
+//    outline = Blue500,
+//    outlineVariant = Blue500,
+//    scrim = Blue500,
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Orange700,
-    secondary = Orange500,
-    tertiary = Teal500
+//    primary = Orange700,
+//    secondary = Orange500,
+//    tertiary = Teal500
+
+    primary = NavyBlue500,
+    secondary = NavyBlue900,
+    tertiary = NavyBlue500,
+
+    onPrimary = White,
+    onSurface = Gray900, //
+    onSurfaceVariant = Gray900, //
+    onSecondary = Gray900, //
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -45,10 +84,10 @@ fun MVVMAuthModuleTheme(
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
+//        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+//            val context = LocalContext.current
+//            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+//        }
 
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
@@ -57,7 +96,7 @@ fun MVVMAuthModuleTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
+            window.statusBarColor = colorScheme.secondary.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
         }
     }

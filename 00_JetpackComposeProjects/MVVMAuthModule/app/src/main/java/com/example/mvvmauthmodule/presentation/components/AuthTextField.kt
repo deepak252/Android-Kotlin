@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -24,7 +25,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.mvvmauthmodule.ui.theme.Gray400
 import com.example.mvvmauthmodule.ui.theme.Gray900
+import com.example.mvvmauthmodule.ui.theme.Red500
 import com.example.mvvmauthmodule.ui.theme.White
 
 
@@ -34,8 +37,8 @@ fun AuthTextField(
     modifier : Modifier = Modifier,
     value : String,
     hintText : String = "",
-    backgroundColor : Color = White,
-    textColor : Color = Color.Black,
+    backgroundColor : Color =  MaterialTheme.colorScheme.surface,
+    textColor : Color = MaterialTheme.colorScheme.onSurface,
     cursorColor : Color =  MaterialTheme.colorScheme.primary,
     enabled : Boolean = true,
     onValueChange : (String)->Unit,
@@ -59,9 +62,10 @@ fun AuthTextField(
             cursorColor = cursorColor,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
-            textColor = textColor
+            textColor = textColor,
+
 //            unfocusedLabelColor = Gray400,
-//            placeholderColor = Gray400,
+            placeholderColor = Gray400,
 //            focusedLabelColor = Blue500,
         ),
         enabled = enabled,
@@ -73,25 +77,20 @@ fun AuthTextField(
                     imageVector = leadingIcon,
                     contentDescription = null,
                     tint = cursorColor,
-                    modifier = Modifier.clickable {
-                        if(onTrailingIconClick!=null){
-                            onTrailingIconClick()
-                        }
-                    }
                 )
             }
         },
         trailingIcon = {
             if(trailingIcon!=null){
-                Icon(
-                    imageVector = trailingIcon,
-                    contentDescription = null,
-                    tint = cursorColor,
-                    modifier = Modifier
-                        .clickable {
-                            if(onTrailingIconClick != null) onTrailingIconClick()
-                        }
-                )
+                IconButton(onClick = {
+                    if(onTrailingIconClick != null) onTrailingIconClick()
+                }) {
+                    Icon(
+                        imageVector = trailingIcon,
+                        contentDescription = null,
+                        tint = cursorColor,
+                    )
+                }
             }
         },
         placeholder = {

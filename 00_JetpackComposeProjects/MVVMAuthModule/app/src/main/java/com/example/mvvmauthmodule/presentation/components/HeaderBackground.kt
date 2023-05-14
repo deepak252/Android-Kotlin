@@ -13,7 +13,7 @@ import com.example.mvvmauthmodule.ui.theme.Orange700
 
 @Composable
 fun HeaderBackground(
-    leftColor : Color = MaterialTheme.colorScheme.primary,
+    leftColor : Color = MaterialTheme.colorScheme.secondary,
     rightColor : Color =  MaterialTheme.colorScheme.tertiary,
     modifier : Modifier= Modifier
 ) {

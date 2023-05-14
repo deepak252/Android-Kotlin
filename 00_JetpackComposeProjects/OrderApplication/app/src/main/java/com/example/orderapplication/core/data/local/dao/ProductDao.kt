@@ -12,6 +12,6 @@ interface ProductDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertProduct(productEntity: ProductEntity)
 
-    @Query( "SELECT * FROM ProductEntity  WHERE belongsToDeliverer = :delivererId"  )
-    suspend fun getProductsForDeliverer(delivererId : String) : List<ProductEntity>
+    @Query( "SELECT * FROM ProductEntity  WHERE belongsToVendor = :vendorId"  )
+    suspend fun getProductsForVendor(vendorId : String) : List<ProductEntity>
 }

@@ -1,13 +1,13 @@
 package com.example.orderapplication.core.util
 
-import com.example.orderapplication.core.domain.model.Deliverer
+import com.example.orderapplication.core.domain.model.Vendor
 import com.example.orderapplication.core.domain.model.Product
 
 
 object DummyData {
 
-    val deliverers = listOf(
-        Deliverer(
+    val vendors = listOf(
+        Vendor(
             "1",
             "Paper Factory Ltd",
             listOf(
@@ -18,7 +18,7 @@ object DummyData {
                 Product("5","Printer Paper 100x",4.55f),
             )
         ),
-        Deliverer(
+        Vendor(
             "2",
             "School Stuff provider",
             listOf(
@@ -29,7 +29,7 @@ object DummyData {
                 Product("10","Pencil Case",2.69f),
             )
         ),
-        Deliverer(
+        Vendor(
             "3",
             "Computer Hardware Store",
             listOf(

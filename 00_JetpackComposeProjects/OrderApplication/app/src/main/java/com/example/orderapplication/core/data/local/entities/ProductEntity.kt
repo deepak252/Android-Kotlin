@@ -8,5 +8,5 @@ data class ProductEntity(
     @PrimaryKey val productId : String,
     val name : String,
     val pricePerAmount : Float,
-    val belongsToDeliverer : String
+    val belongsToVendor : String
 )

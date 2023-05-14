@@ -4,11 +4,11 @@ import androidx.room.Embedded
 import androidx.room.Relation
 
 //https://developer.android.com/training/data-storage/room/relationships#one-to-many
-data class DelivererWithProductsDataObject(
-    @Embedded val delivererEntity: DelivererEntity,
+data class VendorWithProductsDataObject(
+    @Embedded val vendorEntity: VendorEntity,
     @Relation(
-        parentColumn = "delivererId",
-        entityColumn = "belongsToDeliverer"
+        parentColumn = "vendorId",
+        entityColumn = "belongsToVendor"
     )
     val products : List<ProductEntity>
 )

@@ -3,9 +3,9 @@ package com.example.orderapplication.core.di
 import android.content.Context
 import androidx.room.Room
 import com.example.orderapplication.core.data.local.OrderDatabase
-import com.example.orderapplication.core.data.local.dao.DelivererDao
 import com.example.orderapplication.core.data.local.dao.OrderDao
 import com.example.orderapplication.core.data.local.dao.ProductDao
+import com.example.orderapplication.core.data.local.dao.VendorDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -35,8 +35,8 @@ object OrderModule {
 
     @Provides
     @Singleton
-    fun provideDelivererDao(orderDatabase: OrderDatabase) : DelivererDao{
-        return orderDatabase.delivererDao()
+    fun provideVendorDao(orderDatabase: OrderDatabase) : VendorDao{
+        return orderDatabase.vendorDao()
     }
 
     @Provides

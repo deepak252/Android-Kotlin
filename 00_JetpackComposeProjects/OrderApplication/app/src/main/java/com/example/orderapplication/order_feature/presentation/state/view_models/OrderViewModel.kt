@@ -7,6 +7,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.orderapplication.core.domain.model.Product
+import com.example.orderapplication.core.domain.model.Vendor
+import com.example.orderapplication.order_feature.domain.model.BoughtProduct
 import com.example.orderapplication.order_feature.domain.model.Order
 import com.example.orderapplication.order_feature.domain.repository.OrderRepository
 import com.example.orderapplication.order_feature.presentation.mapper.toOrderDetailUiState
@@ -37,6 +40,18 @@ class OrderViewModel @Inject constructor(
         viewModelScope.launch {
             orders = orderRepository.getOrders()
             setupOrderList()
+//            orderRepository.insertOrder(
+//                Order(
+//                    "1",
+//                    "2022.10.15 12:05:12",
+//                    "quick",
+//                    "Paper Factory Ltd",
+//                    listOf(
+//                        BoughtProduct("1","Notebook Big",1.45f,2),
+//                        BoughtProduct("2","Notebook Medium",1.25f,5),
+//                    )
+//                )
+//            )
         }
     }
 

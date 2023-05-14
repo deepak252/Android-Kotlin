@@ -17,7 +17,7 @@ interface OrderDao {
 
     @Transaction
     @Query("SELECT * FROM orderEntity")
-    suspend fun getOrders() : List<OrderWithProductsDataObject>
+    suspend fun getOrderWithProducts() : List<OrderWithProductsDataObject>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertOrderProductEntities(orderProductEntities : List<OrderProductEntity>)

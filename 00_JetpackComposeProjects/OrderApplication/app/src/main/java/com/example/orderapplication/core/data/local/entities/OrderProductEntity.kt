@@ -7,5 +7,5 @@ import androidx.room.Entity
 data class OrderProductEntity(
     val orderId : String,
     val productId : String,
-    val amount : Float
+    val amount : Int
 )

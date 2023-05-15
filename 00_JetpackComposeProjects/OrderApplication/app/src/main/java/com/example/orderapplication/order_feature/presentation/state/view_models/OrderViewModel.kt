@@ -1,25 +1,18 @@
 package com.example.orderapplication.order_feature.presentation.state.view_models
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.orderapplication.core.domain.model.Product
-import com.example.orderapplication.core.domain.model.Vendor
-import com.example.orderapplication.order_feature.domain.model.BoughtProduct
 import com.example.orderapplication.order_feature.domain.model.Order
 import com.example.orderapplication.order_feature.domain.repository.OrderRepository
 import com.example.orderapplication.order_feature.presentation.mapper.toOrderDetailUiState
-import com.example.orderapplication.order_feature.presentation.mapper.toOrderItemUiState
+import com.example.orderapplication.order_feature.presentation.mapper.toOrderUiState
 import com.example.orderapplication.order_feature.presentation.state.OrderDetailUiState
-import com.example.orderapplication.order_feature.presentation.state.OrderItemUiState
+import com.example.orderapplication.order_feature.presentation.state.OrderUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,7 +21,7 @@ class OrderViewModel @Inject constructor(
 ) : ViewModel() {
 
     private lateinit var orders : List<Order>
-    var orderList by mutableStateOf<List<OrderItemUiState>>(emptyList())
+    var orderList by mutableStateOf<List<OrderUiState>>(emptyList())
         private set
 
     var isOrderDialogShown by mutableStateOf(false)
@@ -74,7 +67,7 @@ class OrderViewModel @Inject constructor(
 //        val formatter : DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")
 
         orderList = orders.map { order ->
-            order.toOrderItemUiState()
+            order.toOrderUiState()
         }
 //            .sortedByDescending {orderItemUiState ->
 //            LocalDateTime.parse(orderItemUiState.orderDate, formatter)

@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.orderapplication.order_feature.presentation.screens.OrderChooseVendorScreen
 import com.example.orderapplication.order_feature.presentation.screens.OrderScreen
 
 @Composable
@@ -17,6 +18,9 @@ fun Navigation(
     ){
         composable(ScreenRoutes.OrderScreen.route){
             OrderScreen(navController = navController)
+        }
+        composable(ScreenRoutes.OrderChooseVendorScreen.route){
+            OrderChooseVendorScreen(navController = navController)
         }
 
     }

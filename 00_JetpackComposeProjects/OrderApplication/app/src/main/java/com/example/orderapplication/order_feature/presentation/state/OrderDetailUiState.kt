@@ -4,5 +4,5 @@ data class OrderDetailUiState(
     val orderId : String,
     val vendorName : String,
     val orderDate : String,
-    val products : List<ProductItemUiState>
+    val products : List<ProductUiState>
 )

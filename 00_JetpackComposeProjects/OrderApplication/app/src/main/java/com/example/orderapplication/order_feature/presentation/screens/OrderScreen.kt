@@ -17,22 +17,20 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.orderapplication.core.presentation.ScreenRoutes
 import com.example.orderapplication.order_feature.presentation.components.OrderDetailDialog
-import com.example.orderapplication.order_feature.presentation.components.OrderItemTile
+import com.example.orderapplication.order_feature.presentation.components.OrderTile
 import com.example.orderapplication.order_feature.presentation.state.view_models.OrderViewModel
 import com.example.orderapplication.ui.theme.Gray400
 import com.example.orderapplication.ui.theme.Orange500
-import com.example.orderapplication.ui.theme.White
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,7 +40,11 @@ fun OrderScreen(
 ) {
     Scaffold(
         floatingActionButton = {
-            FloatingActionButton(onClick = { /*TODO*/ }) {
+            FloatingActionButton(
+                onClick = {
+                    navController.navigate(ScreenRoutes.OrderChooseVendorScreen.route)
+                }
+            ) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = "fab_add_order"
@@ -88,8 +90,8 @@ fun OrderScreen(
                             orderListItem.orderId
                         }
                     ){
-                        OrderItemTile(
-                            orderItemUiState = it,
+                        OrderTile(
+                            orderUiState = it,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clip(RoundedCornerShape(10.dp))

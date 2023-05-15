@@ -18,13 +18,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.orderapplication.order_feature.presentation.state.OrderItemUiState
+import com.example.orderapplication.order_feature.presentation.state.OrderUiState
 import com.example.orderapplication.ui.theme.Gray400
 import com.example.orderapplication.ui.theme.White
 
 @Composable
-fun OrderItemTile(
-    orderItemUiState: OrderItemUiState,
+fun OrderTile(
+    orderUiState: OrderUiState,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -38,12 +38,12 @@ fun OrderItemTile(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                orderItemUiState.vendorName,
+                orderUiState.vendorName,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
             Text(
-                "%.2f".format(orderItemUiState.totalAmount) + " $",
+                "%.2f".format(orderUiState.totalAmount) + " $",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
@@ -51,7 +51,7 @@ fun OrderItemTile(
         }
         Divider(color = Gray400)
         Text(
-            orderItemUiState.orderDate,
+            orderUiState.orderDate,
             style = MaterialTheme.typography.titleSmall,
         )
 
@@ -61,9 +61,9 @@ fun OrderItemTile(
 //@Preview(showSystemUi = true)
 @Preview()
 @Composable
-private fun OrderItemTilePreview(){
-    OrderItemTile(
-        orderItemUiState = OrderItemUiState(
+private fun OrderTilePreview(){
+    OrderTile(
+        orderUiState = OrderUiState(
             orderId = "1",
             vendorName = "ABC Enterprises",
             totalAmount = 2.5,

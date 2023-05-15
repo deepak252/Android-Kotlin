@@ -11,7 +11,7 @@ import com.example.orderapplication.core.data.local.entities.VendorWithProductsD
 @Dao
 interface VendorDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertDeliverer(vendorEntity: VendorEntity)
+    suspend fun insertVendor(vendorEntity: VendorEntity)
 
     @Transaction
     @Query("SELECT * FROM VendorEntity")

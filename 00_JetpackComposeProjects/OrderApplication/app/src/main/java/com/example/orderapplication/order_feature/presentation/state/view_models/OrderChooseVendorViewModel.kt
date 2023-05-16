@@ -33,6 +33,7 @@ class OrderChooseVendorViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             vendors = orderRepository.getVendors()
+            setupVendorsToShow()
         }
     }
 

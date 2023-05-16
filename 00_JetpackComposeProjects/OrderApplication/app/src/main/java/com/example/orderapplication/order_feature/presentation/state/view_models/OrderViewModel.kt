@@ -5,21 +5,23 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.orderapplication.core.util.DummyData
 import com.example.orderapplication.order_feature.domain.model.Order
 import com.example.orderapplication.order_feature.domain.repository.OrderRepository
 import com.example.orderapplication.order_feature.presentation.mapper.toOrderDetailUiState
 import com.example.orderapplication.order_feature.presentation.mapper.toOrderUiState
 import com.example.orderapplication.order_feature.presentation.state.OrderDetailUiState
 import com.example.orderapplication.order_feature.presentation.state.OrderUiState
+import com.example.orderapplication.vendor_feature.domain.repository.VendorRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class OrderViewModel @Inject constructor(
-    private val orderRepository : OrderRepository
+    private val orderRepository : OrderRepository,
+    private val vendorRepository: VendorRepository // Only for insert vendors
 ) : ViewModel() {
-
     private lateinit var orders : List<Order>
     var orderList by mutableStateOf<List<OrderUiState>>(emptyList())
         private set
@@ -33,6 +35,7 @@ class OrderViewModel @Inject constructor(
         viewModelScope.launch {
             orders = orderRepository.getOrders()
             setupOrderList()
+//            vendorRepository.insertVendors(DummyData.vendors)
 //            orderRepository.insertOrder(
 //                Order(
 //                    "1",

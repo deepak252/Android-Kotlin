@@ -1,8 +1,12 @@
 package com.example.orderapplication.order_feature.presentation.state.view_models
 
+import android.app.Application
+import android.content.Context
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.orderapplication.core.util.DummyData
@@ -20,8 +24,9 @@ import javax.inject.Inject
 @HiltViewModel
 class OrderViewModel @Inject constructor(
     private val orderRepository : OrderRepository,
-    private val vendorRepository: VendorRepository // Only for insert vendors
-) : ViewModel() {
+    private val vendorRepository: VendorRepository, // Only for insert vendors
+    private val application: Application
+) : AndroidViewModel(application) {
     private lateinit var orders : List<Order>
     var orderList by mutableStateOf<List<OrderUiState>>(emptyList())
         private set
@@ -33,6 +38,16 @@ class OrderViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
+            val prefs = application.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+            val firstStart = prefs.getBoolean("first_start", true)
+            Log.d("MyTag","First Start = $firstStart")
+            if(firstStart){
+                vendorRepository.insertVendors(DummyData.vendors)
+                with(prefs.edit()){
+                    putBoolean("first_start",false)
+                    apply()
+                }
+            }
             orders = orderRepository.getOrders()
             setupOrderList()
 //            vendorRepository.insertVendors(DummyData.vendors)
